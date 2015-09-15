@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+  <id>sidekick</id>
+  <name>SIDEKICK</name>
+  <description>Pulls in the SIDEKICK interactive tutorial platform.</description>
+  <version>1.0</version>
+  <release>0</release>
+  <vendor>FlowPress</vendor>
+  <url>http://sidekick.pro/</url>
+  <plesk_min_version>12.1</plesk_min_version>
+</module>

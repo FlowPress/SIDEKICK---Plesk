@@ -1,0 +1,46 @@
+<?php
+// Copyright 1999-2015. Parallels IP Holdings GmbH.
+?>
+<?php //echo $this->renderTabs($this->tabs); ?>
+
+<?php if ($this->key): ?>
+	Status: Active
+<?php endif ?>
+
+<?php echo $this->form; ?>
+
+<?php if (!isset($this->key)): ?>
+
+	<h2>Installation Options</h2>
+
+	<h3>1. Above</h3>
+	<p>Enter your SIDEKICK credentials above and click the activation button.</p>
+
+	<h3>2. Plesk Command Line (CLI)</h3>
+	<p>Through some simple bash scripting you can utulize the Plesk API to install and activate the SIDEKICK extension.</p>
+	<ul>
+		<li>
+			<p>
+				<pre>
+		/usr/local/psa/bin/extension -i <b>sidekick_extension.zip</b>;
+		plesk php /usr/local/psa/admin/plib/modules/sidekick/scripts/configure.php <b>sidekick_api_email sidekick_api_password</b>;</pre>
+			</p>
+
+			<b>Example</b>
+			<p>
+				<pre>
+		/usr/local/psa/bin/extension -i <b>/mnt/hgfs/dist/sidekick_plesk_extension.zip</b>;
+		plesk php /usr/local/psa/admin/plib/modules/sidekick/scripts/configure.php <b>plesk_sub@sidekick.pro plesk_sub@sidekick.pro</b>;</pre>
+			</p>
+		</li>
+	</ul>
+
+	<h3>3. Advanced Mass Deployments</h3>
+	<p>For advanced installations you can directly call the SIDEKICK API to authenticate and generate a new key. Follow these articles:</p>
+	<ol>
+		<li>API Authentication - <a target='_blank' href='https://sidekick.zendesk.com/hc/en-us/articles/208566047-API-Authentication'>https://sidekick.zendesk.com/hc/en-us/articles/208566047-API-Authentication</a></li>
+		<li>Key Generation - <a target='_blank' href='https://sidekick.zendesk.com/hc/en-us/articles/207839558-Generate-Activation-Key-via-API'>https://sidekick.zendesk.com/hc/en-us/articles/207839558-Generate-Activation-Key-via-API</a></li>
+		<li>Plesk Configuration - <a target='_blank' href='https://sidekick.zendesk.com/hc/en-us/articles/209973987'>https://sidekick.zendesk.com/hc/en-us/articles/209973987</a></li>
+	</ol>
+<?php endif ?>
+

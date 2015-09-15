@@ -1,0 +1,22 @@
+<?php
+
+// Copyright 1999-2015. FlowPress Inc.
+pm_Context::init('sidekick');
+
+// Params needed email, password, and optionally subscription id
+
+echo "INSTALL SIDEKICK\n";
+var_dump($argv);
+
+require_once('sidekick_api.php');
+
+$sidekick = new sidekick;
+if ($sidekick->login()) {
+    $sidekick->delete_key();
+}
+
+$taskId = pm_Settings::get('sidekick_scheduled_task_id');
+$task = pm_Scheduler::getInstance()->getTaskById($taskId);
+pm_Scheduler::getInstance()->removeTask($task);
+
+exit(1);

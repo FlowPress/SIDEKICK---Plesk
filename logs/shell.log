@@ -1,0 +1,36 @@
+Welcome to Ubuntu 14.04.3 LTS (GNU/Linux 3.19.0-28-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+
+46 packages can be updated.
+5 updates are security updates.
+
+Last login: Tue Sep 15 11:35:47 2015 from 192.168.131.1
+/usr/local/psa/bin/extension -u sidekick ; /usr/local/psa/bin/extension -i /mnt/hgfs/dist/sidekick_plesk_extension.zip
+exit
+root@localhost:~# /usr/local/psa/bin/extension -u sidekick ; /usr/local/psa/bin/ extension -i /mnt/hgfs/dist/sidekick_plesk_extension.zip
+Executing /opt/psa/admin/plib/modules/sidekick/scripts/pre-uninstall.php failed: INSTALL SIDEKICK
+array(1) {
+  [0]=>
+  string(62) "/opt/psa/admin/plib/modules/sidekick/scripts/pre-uninstall.php"
+}
+Missing SIDEKICK credentials!
+
+[2015-09-15 11:36:07] ERR [panel] The scheduled task already exists.:
+0: /opt/psa/admin/plib/Scheduler/Crontab.php:434
+	Scheduler_Crontab->addEntryObj(object of type Scheduler_Crontab_Entry)
+1: /opt/psa/admin/plib/Scheduler/Crontab.php:424
+	Scheduler_Crontab->_addEntry(object of type Scheduler_Crontab_Entry, string '*', string '*', string '*', string '*', string '*')
+2: /opt/psa/admin/plib/Scheduler/Crontab.php:771
+	Scheduler_Crontab->putTask(object of type Scheduler_Crontab_Entry, array)
+3: /opt/psa/admin/plib/Db/Table/Row/ScheduledTask.php:81
+	Db_Table_Row_ScheduledTask->save()
+4: /opt/psa/admin/plib/pm/Scheduler.php:197
+	pm_Scheduler->putTask(object of type pm_Scheduler_Task)
+5: /opt/psa/admin/plib/modules/sidekick/scripts/post-install.php:20
+`sidekick.zip` is unused file in module
+`logs` is unused directory in module
+`gulpfile.js` is unused file in module
+The extension was successfully installed.
+root@localhost:~# exit
+logout
