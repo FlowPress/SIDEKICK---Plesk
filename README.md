@@ -1,7 +1,20 @@
 ##Installation Instructions
 
-To install the SIDEKICK for Plesk extension into a single Plesk instance, login to Plesk, 
-click “Extensions” and then “Add Extension”. 
+###Extension Cataglog
+To install the SIDEKICK for Plesk extension into a single Plesk instance, 
+
+1. Login to Plesk
+2. Click “Extensions” and then 
+3. Click "Extensions Catalog"
+4. Find SIDEKICK and click "Install"
+
+###Manual
+Download the *sidekick_plesk_extension.zip* from the *dist* folder within this repository and upload it to your Plesk installation. 
+
+1. Login to Plesk, 
+2. Click “Extensions” and then
+3. Click “Add Extension”
+4. Upload the zip file and click OK
 
 ##Purchasing a Plesk for SIDEKICK license or licenses 
 
