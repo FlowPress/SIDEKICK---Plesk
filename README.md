@@ -1,6 +1,18 @@
+##Purchasing a Plesk for SIDEKICK license or licenses 
+
+If you would like to purchase SIDEKICK for Plesk or arrange a free demo, please visit 
+[http://www.sidekick.pro/plesk-extension](http://www.sidekick.pro/plesk-extension) or contact [sales@sidekick.pro](mailto:sales@sidekick.pro) 
+
 ##Installation Instructions
 
-###Extension Cataglog
+###Option 1: Manual Activation
+
+To activate SIDEKICK for Plesk, enter the SIDEKICK API credentials you received when you opened your account within the SIDEKICK extensions page. 
+
+If you have misplaced your API Credentials, please contact us at [support@sidekick.pro](mailto:support@sidekick.pro). 
+
+
+####Extension Catalog
 To install the SIDEKICK for Plesk extension into a single Plesk instance, 
 
 1. Login to Plesk
@@ -8,26 +20,13 @@ To install the SIDEKICK for Plesk extension into a single Plesk instance,
 3. Click "Extensions Catalog"
 4. Find SIDEKICK and click "Install"
 
-###Manual
+####Download
 Download the *sidekick_plesk_extension.zip* from the *dist* folder within this repository and upload it to your Plesk installation. 
 
 1. Login to Plesk, 
 2. Click “Extensions” and then
 3. Click “Add Extension”
 4. Upload the zip file and click OK
-
-##Purchasing a Plesk for SIDEKICK license or licenses 
-
-If you would like to purchase SIDEKICK for Plesk or arrange a free demo, please visit 
-[http://www.sidekick.pro/plesk-extension](http://www.sidekick.pro/plesk-extension) or contact [sales@sidekick.pro](mailto:sales@sidekick.pro) 
-
-###Option 1: Activation Instructions
-
-To activate SIDEKICK for Plesk, enter the SIDEKICK API credentials you received when you 
-opened your account within the SIDEKICK extensions page. 
-
-If you have misplaced your API Credentials, please contact us at [support@sidekick.pro](mailto:support@sidekick.pro). 
-
 
 ###Option 2: Deploy Plesk Automatically with Every Installation
 
