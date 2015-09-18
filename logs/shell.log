@@ -1,11 +1,4 @@
-Welcome to Ubuntu 14.04.3 LTS (GNU/Linux 3.19.0-28-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com/
-
-46 packages can be updated.
-5 updates are security updates.
-
-Last login: Tue Sep 15 11:35:47 2015 from 192.168.131.1
+Last login: Fri Sep 18 09:23:01 2015 from 192.168.131.1
 /usr/local/psa/bin/extension -u sidekick ; /usr/local/psa/bin/extension -i /mnt/hgfs/dist/sidekick_plesk_extension.zip
 exit
 root@localhost:~# /usr/local/psa/bin/extension -u sidekick ; /usr/local/psa/bin/ extension -i /mnt/hgfs/dist/sidekick_plesk_extension.zip
@@ -16,7 +9,7 @@ array(1) {
 }
 Missing SIDEKICK credentials!
 
-[2015-09-15 11:36:07] ERR [panel] The scheduled task already exists.:
+[2015-09-18 09:23:08] ERR [panel] The scheduled task already exists.:
 0: /opt/psa/admin/plib/Scheduler/Crontab.php:434
 	Scheduler_Crontab->addEntryObj(object of type Scheduler_Crontab_Entry)
 1: /opt/psa/admin/plib/Scheduler/Crontab.php:424

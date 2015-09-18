@@ -92,7 +92,8 @@ if (!class_exists('sidekick')) {
 				pm_Settings::clean();
 				return true;
 			} else {
-				echo "$result->message - $key_id";
+				echo "Token: " . $token = pm_Settings::get('sidekick_token');
+				echo "\n<br/>$result->message - $key_id";
 				// Clean key anyway...
 				pm_Settings::clean();
 				return false;
