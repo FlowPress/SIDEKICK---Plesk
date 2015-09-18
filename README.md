@@ -1,4 +1,4 @@
-##Purchasing a Plesk for SIDEKICK license or licenses 
+##Purchasing a Plesk for SIDEKICK license(s) 
 
 If you would like to purchase SIDEKICK for Plesk or arrange a free demo, please visit 
 [http://www.sidekick.pro/plesk-extension](http://www.sidekick.pro/plesk-extension) or contact [sales@sidekick.pro](mailto:sales@sidekick.pro) 
