@@ -20,12 +20,14 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
         }
 
         $data = array(
-            'server_os'             => $platform,
-            'user_type_is_admin'    => $is_admin,
-            'user_type_is_reseller' => $is_reseller,
-            'user_type_is_client'   => $is_client,
-            'language'              => $langulage,
-            'view'                  => $view
+            'compatibilities' => array(
+                'server_os'             => $platform,
+                'user_type_is_admin'    => $is_admin,
+                'user_type_is_reseller' => $is_reseller,
+                'user_type_is_client'   => $is_client,
+                'language'              => $langulage,
+                'view'                  => $view
+                )
             );
 
         $data = json_encode($data);
