@@ -5,15 +5,16 @@ pm_Context::init('sidekick');
 
 // Params needed email, password, and optionally subscription id
 
-echo "INSTALL SIDEKICK\n";
-var_dump($argv);
+echo "UNINSTALL SIDEKICK\n";
 
-require_once('sidekick_api.php');
+// Disabled for the time being, relying on pings anyway
 
-$sidekick = new sidekick;
-if ($sidekick->login()) {
-    $sidekick->delete_key();
-}
+// require_once('sidekick_api.php');
+
+// $sidekick = new sidekick;
+// if ($sidekick->login()) {
+//     $sidekick->delete_key();
+// }
 
 $taskId = pm_Settings::get('sidekick_scheduled_task_id');
 $task = pm_Scheduler::getInstance()->getTaskById($taskId);
