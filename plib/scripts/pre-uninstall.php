@@ -18,6 +18,6 @@ echo "UNINSTALL SIDEKICK\n";
 
 $taskId = pm_Settings::get('sidekick_scheduled_task_id');
 $task = pm_Scheduler::getInstance()->getTaskById($taskId);
-pm_Scheduler::getInstance()->removeTask($task);
+pm_Scheduler::getInstance()->removeTask($task);  
 
-exit(1);
+// exit(1); 
