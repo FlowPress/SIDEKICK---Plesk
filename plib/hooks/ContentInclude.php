@@ -5,13 +5,14 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 
     public function getHeadContent()
     {
-        $platform    = pm_ProductInfo::getPlatform();
-        $is_admin    = pm_Session::getClient()->isAdmin();
-        $is_reseller = pm_Session::getClient()->isReseller();
-        $is_client   = pm_Session::getClient()->isClient();
-        $langulage   = pm_Locale::getCode();
-        $apiResponse = pm_ApiRpc::getService()->call("<server><get><gen_info/></get></server>");
-        $mode        = $apiResponse->server->get->result->gen_info->mode;
+        $platform      = pm_ProductInfo::getPlatform();
+        $is_admin      = pm_Session::getClient()->isAdmin();
+        $is_reseller   = pm_Session::getClient()->isReseller();
+        $is_client     = pm_Session::getClient()->isClient();
+        $langulage     = pm_Locale::getCode();
+        $apiResponse   = pm_ApiRpc::getService()->call("<server><get><gen_info/></get></server>");
+        $mode          = $apiResponse->server->get->result->gen_info->mode;
+        $activation_id = pm_Settings::get('sidekick_activation_id');
 
         if ('standard' == $mode) {
             $view = 'service_provider';
@@ -20,6 +21,7 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
         }
 
         $data = array(
+            'activation_id' => $activation_id,
             'compatibilities' => array(
                 'server_os'             => $platform,
                 'user_type_is_admin'    => $is_admin,

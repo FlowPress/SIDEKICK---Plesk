@@ -3,8 +3,8 @@
 if (!class_exists('sidekick')) {
 	class sidekick{
 
-		// var $url          = 'https://apiv2.sidekick.pro/';
-		var $url             = 'https://api.staging.sidekick.pro/';
+		var $url          = 'https://apiv2.sidekick.pro/';
+		// var $url             = 'https://api.staging.sidekick.pro/';
 		var $email           = null;
 		var $password        = null;
 		var $subscription_id = null;
@@ -45,7 +45,7 @@ if (!class_exists('sidekick')) {
 				$data['subscriptionId'] = $this->subscription_id;
 			}
 
-			$result = $this->send('domains',null,$data);
+			$result = $this->send('domains','POST',$data);
 
 			if (isset($result->payload->domainKey)) {
 				pm_Settings::set('sidekick_activation_id', $result->payload->domainKey);			
