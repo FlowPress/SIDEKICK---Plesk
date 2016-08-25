@@ -4,8 +4,9 @@
         <name>SIDEKICK</name>
         <description>This extension adds the SIDEKICK platform and over 60 real-time, interactive tutorials, to your Plesk installation. Learn or teach your customers to use Plesk in-flow and in-context without having to read a document or watch a video. For a complete list of available tutorials and more information on SIDEKICK visit http://www.sidekick.pro/plesk-extension .</description>
         <version>1.03</version>
-        <release>0</release>
+        <release>1</release>
         <vendor>FlowPress</vendor>
         <url>https://www.sidekick.pro/plesk-tutorials/</url>
         <plesk_min_version>12.5</plesk_min_version>
+        <plesk_max_version>17.0</plesk_max_version>
     </module>
