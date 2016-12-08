@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 if (!pm_Session::getClient()->isAdmin()) {
 	throw new pm_Exception('Permission denied');
