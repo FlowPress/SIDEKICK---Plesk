@@ -1,22 +1,33 @@
 /*
 
 A00Y00-YPGN03-HWW988-H4R588-VG8T45
-https://de59ed5762d6:8443/admin/module/catalog
+https://1d869043f690:8443/admin/module/catalog
 
-
+docker-machine start
 docker stop plesk; docker rm plesk
 
-docker run -d -it --name plesk -p 8880:8880 -p 8443:8443 -p 8447:8447\
+docker run -d -it --name plesk -p 8880:8880 -p 2121:21 -p 2222:22 -p 8443:8443 -p 8447:8447\
+ -v /Users/bartdabek/.ssh/authorized_keys:/root/.ssh/authorized_keys \
+ -v /Users/bartdabek/Sites/sidekick/SIDEKICK---Plesk/htdocs/:/usr/local/psa/admin/htdocs/modules/sidekick \
+ -v /Users/bartdabek/Sites/sidekick/SIDEKICK---Plesk/plib/:/opt/psa/admin/plib/modules/sidekick \
+ plesk/plesk:preview
+
+docker run -d -it --name plesk -p 8880:8880 -p 2121:21 -p 2222:22 -p 8443:8443 -p 8447:8447\
+ -v /Users/bartdabek/.ssh/authorized_keys:/root/.ssh/authorized_keys \
  -v /Users/bartdabek/Sites/sidekick/SIDEKICK---Plesk/htdocs/:/usr/local/psa/admin/htdocs/modules/sidekick2 \
  -v /Users/bartdabek/Sites/sidekick/SIDEKICK---Plesk/:/opt/psa/admin/plib/modules/sidekick2 \
+ -v /Users/bartdabek/Sites/sidekick/SIDEKICK---Plesk/htdocs/:/usr/local/psa/admin/htdocs/modules/sidekick \
+ -v /Users/bartdabek/Sites/sidekick/SIDEKICK---Plesk/:/opt/psa/admin/plib/modules/sidekick \
  plesk/plesk:preview
+
+
 
 eval "$(docker-machine env default)"
 
-docker exec -it plesk /usr/local/psa/bin/extension -i /opt/psa/admin/plib/modules/sidekick2/dist/sidekick_plesk_extension.zip
-docker exec -it plesk rm -fr /usr/local/psa/admin/htdocs/modules/sidekick
-docker exec -it plesk ln -s /usr/local/psa/admin/htdocs/modules/sidekick /usr/local/psa/admin/htdocs/modules/sidekick
-docker exec -it plesk rm -fr /opt/psa/admin/plib/modules/sidekick
+docker exec -it plesk /usr/local/psa/bin/extension -i /opt/psa/admin/plib/modules/sidekick2/dist/sidekick_plesk_extension.zip && \
+docker exec -it plesk rm -fr /usr/local/psa/admin/htdocs/modules/sidekick && \
+docker exec -it plesk ln -s /usr/local/psa/admin/htdocs/modules/sidekick /usr/local/psa/admin/htdocs/modules/sidekick && \
+docker exec -it plesk rm -fr /opt/psa/admin/plib/modules/sidekick && \
 docker exec -it plesk ln -s /opt/psa/admin/plib/modules/sidekick2 /opt/psa/admin/plib/modules/sidekick
 
 
@@ -54,9 +65,12 @@ var gulpSSH = new GulpSSH({
     sshConfig: config
 })
 
-gulp.task('install_ext', shell.task([
-  'docker exec -it plesk /usr/local/psa/bin/extension -i /opt/psa/admin/plib/modules/sidekick2/dist/sidekick_plesk_extension.zip'
-]))
+gulp.task('install_ext', ['build'],shell.task([
+'docker exec -it plesk /usr/local/psa/bin/extension -u Sidekick & sleep 5 & docker exec -it plesk /usr/local/psa/bin/extension -i /opt/psa/admin/plib/modules/sidekick2/dist/sidekick_plesk_extension.zip',
+],{
+	verbose: true,
+	ignoreErrors: true
+}))
 
 // gulp.task('install_ext', ['build'], function() {
 //     return gulpSSH
@@ -68,6 +82,7 @@ gulp.task('install_ext', shell.task([
 
 
 gulp.task('clean', function() {
+	console.log('Clean');
     return gulp.src('dist/**', {
             read: false
         })

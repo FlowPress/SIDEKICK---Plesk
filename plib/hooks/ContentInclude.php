@@ -33,9 +33,8 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
             );
 
         $data = json_encode($data);
-        return "<script type=\"text/preloaded\" data-provider=\"sidekick\">$data</script>
-        <script type=\"text/javascript\" src=\"//loader.sidekick.pro/platforms/1a17ab63-9f83-4e8c-9375-f0b6e4a0998a.js\"></script>
-        ";
+		return "bart4";
+        // return "<script type=\"text/preloaded\" data-provider=\"sidekick\">$data</script>        <script type=\"text/javascript\" src=\"//loader.sidekick.pro/platforms/1a17ab63-9f83-4e8c-9375-f0b6e4a0998a.js\"></script>        ";
     }
 
 }
