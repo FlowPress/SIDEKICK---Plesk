@@ -1,5 +1,7 @@
 ##Purchasing a Plesk for SIDEKICK license(s) 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/67b3a4dc07da4f73a020d6a00dae0a20)](https://www.codacy.com/app/raptor235/SIDEKICK---Plesk?utm_source=github.com&utm_medium=referral&utm_content=FlowPress/SIDEKICK---Plesk&utm_campaign=badger)
+
 If you would like to purchase SIDEKICK for Plesk or arrange a free demo, please visit 
 [http://www.sidekick.pro/plesk-extension](http://www.sidekick.pro/plesk-extension) or contact [sales@sidekick.pro](mailto:sales@sidekick.pro) 
 
