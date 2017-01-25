@@ -14,6 +14,7 @@ class IndexController extends pm_Controller_Action
 
 	public function indexAction()
 	{
+		var_dump('indexAction');
 		// Default action will be formAction
 		// $this->_forward('form');
 		$this->_forward('wordpress');
@@ -21,6 +22,8 @@ class IndexController extends pm_Controller_Action
 
 
 	public function wordpressAction(){
+
+		var_dump('wordpressAction');
 
 		require_once __DIR__ . '/../scripts/sidekick_api.php';
 
@@ -90,12 +93,24 @@ class IndexController extends pm_Controller_Action
 				//  plesk bin wp_instance --get-list
 				//  Modules_SecurityAdvisor_WordPress::call('wp-cli', $wordpress['id'], $args);
 				$command = 'wp-cli';
-				$command = 'wp-cli option get siteurl';
+				// $command = 'wp-cli option get siteurl';
+				$options = ["option", "get", "siteurl"];
+
 				$instanceId = 1;
+				$instanceId = $domain_id;
 				 $args = ["--call", 'wp-toolkit', "--{$command}", "-instance-id", $instanceId, "--"];
 				//  $result = pm_ApiCli::call('extension', array_merge($args, $options));
 				$result = pm_ApiCli::call('extension', array_merge($args, $options));
+
+				$options = ["option", "update", "test_key", "bart"];
+				$result = pm_ApiCli::call('extension', array_merge($args, $options));
+
 				 var_dump($result);
+
+				 $options = ["option", "get", "test_key"];
+ 				$result = pm_ApiCli::call('extension', array_merge($args, $options));
+
+ 				 var_dump($result);
 
 
 			}
@@ -134,6 +149,7 @@ class IndexController extends pm_Controller_Action
 	// }
 	//
 	private function setupFormActivation($form){
+		var_dump('setupFormActivation');
 
 		$fileManager = new pm_ServerFileManager();
 		$dbName = $fileManager->joinPath(PRODUCT_VAR, 'modules', 'wp-toolkit', 'wp-toolkit' . '.sqlite3');

@@ -1,9 +1,9 @@
-<?php
+<?php if (!$this->wp_installs): ?>
+	There is no WordPress installations to install Sidekick on.
+<?php else: ?>
+	<?php echo $this->form; ?>
+<?php endif; ?>
 
-// var_dump($this->wp_installs);
-
-?>
-<?php echo $this->form; ?>
 <!-- <form method='POST' action='/modules/sidekick/'>
 <div id="customer-service-plan-list-container">
     <div id="gen-id-867336" class="actions-box">
