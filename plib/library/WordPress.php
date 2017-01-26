@@ -37,4 +37,4 @@ class Modules_SecurityAdvisor_WordPress
     }
 }
 
-var_dump('WordPress.php');
+// var_dump('WordPress.php');
