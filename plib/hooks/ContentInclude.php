@@ -20,6 +20,7 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
             $view = 'power_user';
         }
 
+		$activation_id = '4ebf23b5-c364-43ab-9a18-21c9ff684068';
         $data = array(
             'activation_id' => $activation_id,
             'compatibilities' => array(
