@@ -14,7 +14,6 @@ class IndexController extends pm_Controller_Action
 
 	public function indexAction()
 	{
-		var_dump('indexAction');
 		// Default action will be formAction
 		// $this->_forward('form');
 		$this->_forward('wordpress');
@@ -22,8 +21,6 @@ class IndexController extends pm_Controller_Action
 
 
 	public function wordpressAction(){
-
-		var_dump('wordpressAction');
 
 		require_once __DIR__ . '/../scripts/sidekick_api.php';
 
@@ -83,34 +80,30 @@ class IndexController extends pm_Controller_Action
 
 		// var_dump($_POST);
 
+		$license   = new pm_License();
+		$keyNumber = 'APS.02960584.0008';
+		$license   = new pm_License($keyNumber);
+		$props     = $license->getProperties();
+		var_dump($props);
+
+
 		foreach ($_POST as $key => $value) {
 			if (strpos($key, 'sidekick_activated_') !== false && $value == '1') {
 				// activate this domain
 				list($blah,$domain_id) = explode('sidekick_activated_',$key);
 				// var_dump($domain_id);
 
-
 				//  plesk bin wp_instance --get-list
 				//  Modules_SecurityAdvisor_WordPress::call('wp-cli', $wordpress['id'], $args);
-				$command = 'wp-cli';
-				// $command = 'wp-cli option get siteurl';
-				$options = ["option", "get", "siteurl"];
 
 				$instanceId = 1;
 				$instanceId = $domain_id;
-				 $args = ["--call", 'wp-toolkit', "--{$command}", "-instance-id", $instanceId, "--"];
-				//  $result = pm_ApiCli::call('extension', array_merge($args, $options));
-				$result = pm_ApiCli::call('extension', array_merge($args, $options));
+				$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
+				$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
+				$result = pm_ApiCli::call('extension', array_merge($args, ["option", "update", "test_key", "bart"]));
+				$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "test_key"]));
 
-				$options = ["option", "update", "test_key", "bart"];
-				$result = pm_ApiCli::call('extension', array_merge($args, $options));
-
-				 var_dump($result);
-
-				 $options = ["option", "get", "test_key"];
- 				$result = pm_ApiCli::call('extension', array_merge($args, $options));
-
- 				 var_dump($result);
+				// 	 var_dump($result);
 
 
 			}
@@ -130,6 +123,9 @@ class IndexController extends pm_Controller_Action
 		// 	pm_Settings::set('sk_password', $form->getValue('sk_password'));
 		// }
 		//
+
+		// 		$this->_status->addMessage('info', 'Successfully activated!');p
+
 		// if ($msg = $sidekick->login()) {
 		// 	if ($msg2 = $sidekick->generate_key()){
 		// 		$this->_status->addMessage('info', 'Successfully activated!');
@@ -149,7 +145,7 @@ class IndexController extends pm_Controller_Action
 	// }
 	//
 	private function setupFormActivation($form){
-		var_dump('setupFormActivation');
+		// var_dump('setupFormActivation');
 
 		$fileManager = new pm_ServerFileManager();
 		$dbName = $fileManager->joinPath(PRODUCT_VAR, 'modules', 'wp-toolkit', 'wp-toolkit' . '.sqlite3');
@@ -162,6 +158,10 @@ class IndexController extends pm_Controller_Action
 
 			$domain = pm_Domain::getByDomainId($wp['domainId'])->getName();
 
+			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['domainId'], "--"];
+			$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
+			$key = $result['stdout'];
+
 			$this->view->wp_installs[] = array(
 				'id' => $wp['id'],
 				'domainId' => $wp['domainId'],
@@ -173,17 +173,9 @@ class IndexController extends pm_Controller_Action
 			$form->addElement('checkbox', 'sidekick_activated_' . $wp['domainId'], array(
 				'label' => $domain,
 				'value' =>  pm_Settings::get('sidekick_activated_' . $wp['domainId']),
-				// 'checked' =>  pm_Settings::get('sidekick_activated_' . $wp['domainId']),
-				'validators' => array(
-					// array('NotEmpty', true),
-				),
+				'checked' =>  ($key) ? true: false,
 			));
-
 		}
-
-
-
-
 
 		$form->addControlButtons(array(
 			'cancelLink' => pm_Context::getModulesListUrl(),
@@ -191,8 +183,6 @@ class IndexController extends pm_Controller_Action
 			'cancelTitle' => 'Deactivate'
 			)
 		);
-
-
 	}
 
 	function get_wordpress_installs(){
@@ -215,9 +205,7 @@ class IndexController extends pm_Controller_Action
 		// https://docs.plesk.com/en-US/12.5/extensions-guide/retrieving-plesk-license-information.75339/
 	}
 
-	public function wordpressAction1(){
-		$this->view->wp_installs = $this->get_wordpress_installs();
-	}
+
 
 
 }
