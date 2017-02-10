@@ -80,11 +80,21 @@ class IndexController extends pm_Controller_Action
 
 		// var_dump($_POST);
 
-		$license   = new pm_License();
-		$keyNumber = 'APS.02960584.0008';
-		$license   = new pm_License($keyNumber);
-		$props     = $license->getProperties();
-		var_dump($props);
+		// $license   = new pm_License();
+		// $keyNumber = 'APS.02960584.0008';
+		// $license   = new pm_License($keyNumber);
+		// $props     = $license->getProperties();
+		// var_dump($props);
+
+
+		$productName = 'ext-sidekick'; // ‘ext-<id of extension>’
+		$licenses = pm_License::getAdditionalKeysList($productName);
+		if (count($licenses) == 0) {
+		echo "no licenses";
+		} else {
+		$license = reset($licenses);
+		var_dump($license);
+		}
 
 
 		foreach ($_POST as $key => $value) {
