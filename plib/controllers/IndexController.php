@@ -87,8 +87,10 @@ class IndexController extends pm_Controller_Action
 		// var_dump($props);
 
 
+
 		$productName = 'ext-sidekick'; // ‘ext-<id of extension>’
 		$licenses = pm_License::getAdditionalKeysList($productName);
+		var_dump($licenses);
 		if (count($licenses) == 0) {
 		echo "no licenses";
 		} else {
