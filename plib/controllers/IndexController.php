@@ -22,23 +22,17 @@ class IndexController extends pm_Controller_Action
 
 	public function wordpressAction(){
 
-		require_once __DIR__ . '/../scripts/sidekick_api.php';
-
-		// $this->view->key = pm_Settings::get('sidekick_activation_id');
-
 		$form = new pm_Form_Simple();
-
-		$sidekick = new sidekick;
 
 		$this->setupFormActivation($form);
 
 		if ($this->getRequest()->isPost()){
-			$this->processActivations($sidekick,$form);
+			$this->processActivations($form);
 		}
 		$this->view->form = $form;
 	}
 
-	private function processActivations($sidekick,$form){
+	private function processActivations($form){
 
 		$licenses = pm_License::getAdditionalKeysList('ext-sidekick');
 
