@@ -43,6 +43,7 @@ class IndexController extends pm_Controller_Action
 			if (isset($license['key-body'])) {
 				// var_dump($license);
 				$activation_id = base64_decode($license['key-body']);
+				$activation_id = 'ab9bfce9-60fa-4bf3-9a22-0711a336bd3e';
 
 				foreach ($_POST as $key => $value) {
 					// var_dump($key);
@@ -102,6 +103,7 @@ class IndexController extends pm_Controller_Action
 		foreach ($installs as $key => $wp) {
 
 			$domain = pm_Domain::getByDomainId($wp['domainId'])->getName();
+			$sk_activation_id = null;
 
 			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['domainId'], "--"];
 			$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
@@ -110,13 +112,22 @@ class IndexController extends pm_Controller_Action
 			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['domainId'], "--"];
 			// $result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "is-installed", "sidekick"]));
 			try{
-				$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
+				$result           = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
 				// $result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "is-installed", "sidekick"]));
 				// var_dump($result);
 				$sk_activation_id = $result['stdout'];
 			} catch(Exception $e){
 				// var_dump($e->getMessage());
 			}
+
+			// try{
+			// 	$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "is-installed", "sidekick"]));
+			// } catch(Exception $e){
+			// 	$is_activated = $result;
+			// }
+			// var_dump($domain);
+			// var_dump($is_activated);
+
 			// var_dump($sk_activation_id);
 
 			$this->view->wp_installs[] = array(
@@ -130,7 +141,7 @@ class IndexController extends pm_Controller_Action
 			$form->addElement('checkbox', 'sidekick_activated_' . $wp['domainId'], array(
 				'label' => $domain,
 				'value' =>  pm_Settings::get('sidekick_activated_' . $wp['domainId']),
-				'checked' =>  (intval($sk_activation_id)) ? true: false,
+				'checked' =>  ($sk_activation_id) ? true: false,
 			));
 		}
 

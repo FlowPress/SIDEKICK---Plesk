@@ -20,7 +20,12 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
             $view = 'power_user';
         }
 
-		$activation_id = '4ebf23b5-c364-43ab-9a18-21c9ff684068';
+		// Plesk
+		// $activation_id = '4ebf23b5-c364-43ab-9a18-21c9ff684068';
+
+		// Onyx
+		$activation_id = '735e24da-3c31-49ea-8265-8b3fbe546d2e';
+
         $data = array(
             'activation_id' => $activation_id,
             'compatibilities' => array(
@@ -37,7 +42,7 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 		// return "<script>console.log('bart211')</script>";
 
         return "<script type=\"text/preloaded\" data-provider=\"sidekick\">$data</script>
-            <script type=\"text/javascript\" src=\"//loader.sidekick.pro/platforms/1a17ab63-9f83-4e8c-9375-f0b6e4a0998a.js\"></script>";
+            <script type=\"text/javascript\" src=\"//loader.sidekick.pro/platforms/e7d4a916-52fe-4f7e-ad60-b5aeee13f8f8.js\"></script>";
     }
 
 }
