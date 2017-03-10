@@ -8,6 +8,10 @@ class IndexController extends pm_Controller_Action
 	{
 		parent::init();
 
+		if (!pm_Session::getClient()->isAdmin()) {
+			throw new pm_Exception('Permission denied');
+		}
+
 		// Init title for all actions
 		$this->view->pageTitle = 'Sidekick';
 	}
@@ -15,7 +19,6 @@ class IndexController extends pm_Controller_Action
 	public function indexAction()
 	{
 		// Default action will be formAction
-		// $this->_forward('form');
 		$this->_forward('wordpress');
 	}
 
@@ -41,7 +44,7 @@ class IndexController extends pm_Controller_Action
 		} else {
 			$license = reset($licenses);
 			if (isset($license['key-body'])) {
-				// var_dump($license);
+
 				$activation_id = base64_decode($license['key-body']);
 				$activation_id = 'ab9bfce9-60fa-4bf3-9a22-0711a336bd3e';
 
@@ -51,7 +54,6 @@ class IndexController extends pm_Controller_Action
 						// activate this domain
 						list($blah,$domain_id) = explode('sidekick_activated_',$key);
 						$instanceId = $domain_id;
-						// var_dump('Enable ' . $domain_id);
 						$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
 						try{
 							$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "install", "sidekick","--activate","--force"]));
@@ -64,7 +66,6 @@ class IndexController extends pm_Controller_Action
 					} else if (strpos($key, 'sidekick_activated_') !== false && $value == '0') {
 						list($blah,$domain_id) = explode('sidekick_activated_',$key);
 						$instanceId = $domain_id;
-						// var_dump('Disable' . $domain_id);
 						$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
 						try{
 							$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "deactivate", "sidekick","--uninstall"]));
@@ -78,7 +79,6 @@ class IndexController extends pm_Controller_Action
 						}
 
 					}
-					// var_dump($result);
 				}
 
 			} else {
@@ -93,11 +93,31 @@ class IndexController extends pm_Controller_Action
 
 	private function setupFormActivation($form){
 
+		// try{
+		// 	$wpHelper =  Modules_SecurityAdvisor_Helper_WordPress::get();
+		// } catch (Exception $e){
+		// 	if (!$wpHelper->isAllowedByLicense()) {
+		// 		$this->_status->addWarning($this->lmsg('list.wordpress.notAllowed'));
+		// 	} elseif (!$wpHelper->isInstalled()) {
+		// 		$this->_status->addWarning($this->lmsg('list.wordpress.notInstalled'));
+		// 	}
+		// }
+echo 'cc;';
+	try{
+
+		$list = pm_ApiCli::callSbin('extension',['-l']);
+	} catch (Exception $e){
+
+		var_dump($list);
+	}
+
+return;
 		$fileManager = new pm_ServerFileManager();
 		$dbName = $fileManager->joinPath(PRODUCT_VAR, 'modules', 'wp-toolkit', 'wp-toolkit' . '.sqlite3');
 		$db =  new Zend_Db_Adapter_Pdo_Sqlite(['dbname' => $dbName]);
 		$installs = $db->fetchAll("SELECT * FROM Instances");
-
+		var_dump($installs);
+$this->_status->addWarning('Toolkit not installed');
 
 		$this->view->wp_installs = array();
 		foreach ($installs as $key => $wp) {
@@ -107,28 +127,14 @@ class IndexController extends pm_Controller_Action
 
 			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['domainId'], "--"];
 			$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
-			// $key = $result['stdout'];
 
 			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['domainId'], "--"];
-			// $result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "is-installed", "sidekick"]));
 			try{
 				$result           = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
-				// $result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "is-installed", "sidekick"]));
-				// var_dump($result);
 				$sk_activation_id = $result['stdout'];
 			} catch(Exception $e){
-				// var_dump($e->getMessage());
+					$this->_status->addWarning('Toolkit not installed');
 			}
-
-			// try{
-			// 	$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "is-installed", "sidekick"]));
-			// } catch(Exception $e){
-			// 	$is_activated = $result;
-			// }
-			// var_dump($domain);
-			// var_dump($is_activated);
-
-			// var_dump($sk_activation_id);
 
 			$this->view->wp_installs[] = array(
 				'id' => $wp['id'],
@@ -137,7 +143,7 @@ class IndexController extends pm_Controller_Action
 				'path' => $wp['path'],
 				'apsInstanceId' => $wp['apsInstanceId'],
 			);
-			// var_dump($sk_activation_id);
+
 			$form->addElement('checkbox', 'sidekick_activated_' . $wp['domainId'], array(
 				'label' => $domain,
 				'value' =>  pm_Settings::get('sidekick_activated_' . $wp['domainId']),
