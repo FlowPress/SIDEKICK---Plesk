@@ -93,15 +93,13 @@ class IndexController extends pm_Controller_Action
 
 	private function setupFormActivation($form){
 
-		// try{
-		// 	$wpHelper =  Modules_SecurityAdvisor_Helper_WordPress::get();
-		// } catch (Exception $e){
-		// 	if (!$wpHelper->isAllowedByLicense()) {
-		// 		$this->_status->addWarning($this->lmsg('list.wordpress.notAllowed'));
-		// 	} elseif (!$wpHelper->isInstalled()) {
-		// 		$this->_status->addWarning($this->lmsg('list.wordpress.notInstalled'));
-		// 	}
-		// }
+		$installed_extensions = pm_ApiCli::call('extension', array('--list'));
+		// var_dump($installed_extensions);
+		if (strpos( $installed_extensions['stdout'], 'WordPress Toolkit' ) === false) {
+			$this->_status->addWarning('Toolkit not installed');
+			$this->view->toolkit_not_there = true;
+			return;
+		}
 
 		$fileManager = new pm_ServerFileManager();
 		$dbName = $fileManager->joinPath(PRODUCT_VAR, 'modules', 'wp-toolkit', 'wp-toolkit' . '.sqlite3');
