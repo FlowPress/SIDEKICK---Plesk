@@ -102,22 +102,18 @@ class IndexController extends pm_Controller_Action
 		// 		$this->_status->addWarning($this->lmsg('list.wordpress.notInstalled'));
 		// 	}
 		// }
-echo 'cc;';
-	try{
 
-		$list = pm_ApiCli::callSbin('extension',['-l']);
-	} catch (Exception $e){
-
-		var_dump($list);
-	}
-
-return;
 		$fileManager = new pm_ServerFileManager();
 		$dbName = $fileManager->joinPath(PRODUCT_VAR, 'modules', 'wp-toolkit', 'wp-toolkit' . '.sqlite3');
 		$db =  new Zend_Db_Adapter_Pdo_Sqlite(['dbname' => $dbName]);
 		$installs = $db->fetchAll("SELECT * FROM Instances");
-		var_dump($installs);
-$this->_status->addWarning('Toolkit not installed');
+
+		$sorted_installs = array();
+		foreach ($installs as $key => $install) {
+			$sorted_installs[$install['domainId']][] = $install;
+		}
+		// var_dump($sorted_installs);
+
 
 		$this->view->wp_installs = array();
 		foreach ($installs as $key => $wp) {
@@ -125,18 +121,18 @@ $this->_status->addWarning('Toolkit not installed');
 			$domain = pm_Domain::getByDomainId($wp['domainId'])->getName();
 			$sk_activation_id = null;
 
-			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['domainId'], "--"];
+			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['id'], "--"];
 			$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
 
-			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['domainId'], "--"];
+			$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $wp['id'], "--"];
 			try{
 				$result           = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
 				$sk_activation_id = $result['stdout'];
 			} catch(Exception $e){
-					$this->_status->addWarning('Toolkit not installed');
+					// $this->_status->addWarning('Toolkit not installed');
 			}
 
-			$this->view->wp_installs[] = array(
+			$this->view->wp_installs[$wp['domainId']][] = array(
 				'id' => $wp['id'],
 				'domainId' => $wp['domainId'],
 				'domain' => $domain,
@@ -144,9 +140,9 @@ $this->_status->addWarning('Toolkit not installed');
 				'apsInstanceId' => $wp['apsInstanceId'],
 			);
 
-			$form->addElement('checkbox', 'sidekick_activated_' . $wp['domainId'], array(
-				'label' => $domain,
-				'value' =>  pm_Settings::get('sidekick_activated_' . $wp['domainId']),
+			$form->addElement('checkbox', 'sidekick_activated_' . $wp['id'], array(
+				'label' => $domain . $wp['path'],
+				'value' =>  pm_Settings::get('sidekick_activated_' . $wp['id']),
 				'checked' =>  ($sk_activation_id) ? true: false,
 			));
 		}
