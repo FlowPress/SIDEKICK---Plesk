@@ -20,8 +20,12 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 			$view = 'power_user';
 		}
 
-		// Plesk
-		// $activation_id = '4ebf23b5-c364-43ab-9a18-21c9ff684068';
+		$installed_extensions = pm_ApiCli::call('extension', array('--list'));
+		$wp_tool_kit_license = (bool)(new pm_License())->getProperty('wordpress-toolkit');
+		$wp_toolkit_installed = true;
+		if (strpos( $installed_extensions['stdout'], 'WordPress Toolkit' ) === false || !$wp_tool_kit_license) {
+			$wp_toolkit_installed = false;
+		}
 
 		// Onyx
 		$activation_id = '735e24da-3c31-49ea-8265-8b3fbe546d2e';
@@ -33,6 +37,7 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 				'user_type_is_admin'    => $is_admin,
 				'user_type_is_reseller' => $is_reseller,
 				'user_type_is_client'   => $is_client,
+				'wp_toolkit_installed' => $wp_toolkit_installed,
 				'language'              => $langulage,
 				'view'                  => $view
 			)
@@ -47,7 +52,7 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 			var script = document.createElement('script');
 			script.src = '//loader.sidekick.pro/platforms/e7d4a916-52fe-4f7e-ad60-b5aeee13f8f8.js';
 			document.getElementsByTagName('head')[0].appendChild(script);
-		}, 2000);		
+		}, 2000);
 		</script>
 		";
 	}

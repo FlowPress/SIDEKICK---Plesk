@@ -94,8 +94,9 @@ class IndexController extends pm_Controller_Action
 	private function setupFormActivation($form){
 
 		$installed_extensions = pm_ApiCli::call('extension', array('--list'));
-		// var_dump($installed_extensions);
-		if (strpos( $installed_extensions['stdout'], 'WordPress Toolkit' ) === false) {
+		$wp_tool_kit_license = (bool)(new pm_License())->getProperty('wordpress-toolkit');
+
+		if (strpos( $installed_extensions['stdout'], 'WordPress Toolkit' ) === false || !$wp_tool_kit_license) {
 			$this->_status->addWarning('Toolkit not installed');
 			$this->view->toolkit_not_there = true;
 			return;
