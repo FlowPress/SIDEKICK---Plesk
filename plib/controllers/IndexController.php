@@ -111,8 +111,6 @@ class IndexController extends pm_Controller_Action
 		foreach ($installs as $key => $install) {
 			$sorted_installs[$install['domainId']][] = $install;
 		}
-		// var_dump($sorted_installs);
-
 
 		$this->view->wp_installs = array();
 		foreach ($installs as $key => $wp) {

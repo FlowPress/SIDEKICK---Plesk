@@ -44,8 +44,6 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 		);
 
 		$data = json_encode($data);
-		// return "<script>console.log('bart211')</script>";
-		// <script type=\"text/javascript\" src=\"//loader.sidekick.pro/platforms/e7d4a916-52fe-4f7e-ad60-b5aeee13f8f8.js\"></script>
 		return "<script type=\"text/preloaded\" data-provider=\"sidekick\">$data</script>
 		<script>
 		setTimeout(function() {
