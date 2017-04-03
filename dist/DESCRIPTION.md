@@ -1,0 +1,1 @@
+This extension adds the SIDEKICK platform and over 60 real-time, interactive tutorials, to your Plesk installation. Learn or teach your customers to use Plesk in-flow and in-context without having to read a document or watch a video. For a complete list of available tutorials and more information on SIDEKICK visit <http://www.sidekick.pro/plesk-extension> .
