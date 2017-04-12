@@ -88,6 +88,8 @@ class IndexController extends pm_Controller_Action
 		}
 
 		$this->_status->addMessage('info', 'Successfully updated!');
+		$this->_helper->json(['redirect' => pm_Context::getBaseUrl()]);
+
 	}
 
 	private function setupFormActivation($form){
@@ -148,5 +150,7 @@ class IndexController extends pm_Controller_Action
 			'cancelTitle' => 'Cancel'
 			)
 		);
+
+		// $this->view->buy_link = pm_Context::getBuyUrl();
 	}
 }
