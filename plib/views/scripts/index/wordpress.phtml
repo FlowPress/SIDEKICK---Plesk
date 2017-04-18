@@ -1,5 +1,3 @@
-<?php echo $this->buy_link ?>
-
 <?php if (!$this->toolkit_not_there): ?>
 	<?php if (!$this->wp_installs): ?>
 		There is no WordPress installations to install Sidekick on.
@@ -11,7 +9,7 @@
 
 		<br/>
 
-		To buy a license you need to visit <a href='https://go.plesk.com/buy-plesk-ext/sidekick' target='_blank'>this link</a>.
+		To buy a license you need to visit <a href='<?php echo $this->buy_link ?>' target='_blank'>this link</a>.
 
 	<?php else: ?>
 		Select the WordPress domains you would like to activate SIDEKICK on. <br/><br/>

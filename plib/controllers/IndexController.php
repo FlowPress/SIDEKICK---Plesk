@@ -92,6 +92,13 @@ class IndexController extends pm_Controller_Action
 
 	}
 
+	private function _getBuyUrl(){
+		if (method_exists('pm_Context', 'getBuyUrl')) {
+			return pm_Context::getBuyUrl();
+		}
+		return (new SimpleXMLElement(file_get_contents(pm_Context::getPlibDir() . '/meta.xml')))->buy_url;
+	}
+
 	private function setupFormActivation($form){
 
 		$installed_extensions = pm_ApiCli::call('extension', array('--list'));
@@ -124,7 +131,7 @@ class IndexController extends pm_Controller_Action
 				$result           = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
 				$sk_activation_id = $result['stdout'];
 			} catch(Exception $e){
-					// $this->_status->addWarning('Toolkit not installed');
+				// $this->_status->addWarning('Toolkit not installed');
 			}
 
 			$this->view->wp_installs[$wp['domainId']][] = array(
@@ -151,6 +158,6 @@ class IndexController extends pm_Controller_Action
 			)
 		);
 
-		// $this->view->buy_link = pm_Context::getBuyUrl();
+		$this->view->buy_link = $this->_getBuyUrl();
 	}
 }
