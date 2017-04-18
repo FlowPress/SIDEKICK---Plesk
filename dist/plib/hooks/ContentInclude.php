@@ -50,7 +50,7 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 			var script = document.createElement('script');
 			script.src = '//loader.sidekick.pro/platforms/e7d4a916-52fe-4f7e-ad60-b5aeee13f8f8.js';
 			document.getElementsByTagName('head')[0].appendChild(script);
-		}, 2000);
+		}, 100);
 		</script>
 		";
 	}

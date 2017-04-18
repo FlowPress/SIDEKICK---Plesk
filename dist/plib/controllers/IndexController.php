@@ -88,6 +88,15 @@ class IndexController extends pm_Controller_Action
 		}
 
 		$this->_status->addMessage('info', 'Successfully updated!');
+		$this->_helper->json(['redirect' => pm_Context::getBaseUrl()]);
+
+	}
+
+	private function _getBuyUrl(){
+		if (method_exists('pm_Context', 'getBuyUrl')) {
+			return pm_Context::getBuyUrl();
+		}
+		return (new SimpleXMLElement(file_get_contents(pm_Context::getPlibDir() . '/meta.xml')))->buy_url;
 	}
 
 	private function setupFormActivation($form){
@@ -122,7 +131,7 @@ class IndexController extends pm_Controller_Action
 				$result           = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
 				$sk_activation_id = $result['stdout'];
 			} catch(Exception $e){
-					// $this->_status->addWarning('Toolkit not installed');
+				// $this->_status->addWarning('Toolkit not installed');
 			}
 
 			$this->view->wp_installs[$wp['domainId']][] = array(
@@ -148,5 +157,7 @@ class IndexController extends pm_Controller_Action
 			'cancelTitle' => 'Cancel'
 			)
 		);
+
+		$this->view->buy_link = $this->_getBuyUrl();
 	}
 }
