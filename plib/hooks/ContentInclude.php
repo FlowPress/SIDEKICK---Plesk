@@ -20,11 +20,14 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 			$view = 'power_user';
 		}
 
-		$installed_extensions = pm_ApiCli::call('extension', array('--list'));
-		$wp_tool_kit_license = (bool)(new pm_License())->getProperty('wordpress-toolkit');
-		$wp_toolkit_installed = true;
-		if (strpos( $installed_extensions['stdout'], 'WordPress Toolkit' ) === false || !$wp_tool_kit_license) {
-			$wp_toolkit_installed = false;
+		if (!isset($_COOKIE['sk_wp_toolkit_installed'])) {
+			$installed_extensions = pm_ApiCli::call('extension', array('--list'));
+			$wp_tool_kit_license = (bool)(new pm_License())->getProperty('wordpress-toolkit');
+			$wp_toolkit_installed = true;
+			if (strpos( $installed_extensions['stdout'], 'WordPress Toolkit' ) === false || !$wp_tool_kit_license) {
+				$wp_toolkit_installed = false;
+			}
+			setcookie("sk_wp_toolkit_installed", (bool)$wp_toolkit_installed, time()+3600);
 		}
 
 		// Onyx
@@ -46,11 +49,11 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 		$data = json_encode($data);
 		return "<script type=\"text/preloaded\" data-provider=\"sidekick\">$data</script>
 		<script>
-		setTimeout(function() {
+		document.addEventListener(\"DOMContentLoaded\", function(event) {
 			var script = document.createElement('script');
 			script.src = '//loader.sidekick.pro/platforms/e7d4a916-52fe-4f7e-ad60-b5aeee13f8f8.js';
 			document.getElementsByTagName('head')[0].appendChild(script);
-		}, 100);
+		});
 		</script>
 		";
 	}
