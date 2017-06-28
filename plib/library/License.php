@@ -20,7 +20,7 @@ class Modules_Sidekick_License
 		}
 		$license = reset($licenses);
 		$keyBody = json_decode($license['key-body'], true);
-		if (!isset($keyBody[$type])) {
+		if (!isset($keyBody[$type]) || empty($keyBody[$type])) {
 			return null;
 		}
 		return $keyBody[$type];
