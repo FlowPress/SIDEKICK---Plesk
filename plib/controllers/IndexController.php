@@ -32,7 +32,14 @@ class IndexController extends pm_Controller_Action
 		}
 	}
 
-	public function wordpressAction(){
+	public function wordpressAction()
+	{
+		$licenseHelper = new Modules_Sidekick_License();
+		$license = $licenseHelper->getWordPressLicense();
+		if (is_null($license)) {
+			$this->_forward('index');
+			return;
+		}
 
 		$form = new pm_Form_Simple();
 
@@ -151,16 +158,11 @@ class IndexController extends pm_Controller_Action
 			));
 		}
 
-		$licenseHelper = new Modules_Sidekick_License();
-		$this->view->license = $licenseHelper->getWordPressLicense();
-
 		$form->addControlButtons(array(
 			'cancelLink' => pm_Context::getModulesListUrl(),
 			'sendTitle' => 'Update',
 			'cancelTitle' => 'Cancel'
 			)
 		);
-
-		$this->view->buy_link = $this->_getBuyUrl();
 	}
 }
