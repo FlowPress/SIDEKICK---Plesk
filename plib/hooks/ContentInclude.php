@@ -27,7 +27,9 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 			if (strpos( $installed_extensions['stdout'], 'WordPress Toolkit' ) === false || !$wp_tool_kit_license) {
 				$wp_toolkit_installed = false;
 			}
-			setcookie("sk_wp_toolkit_installed", (bool)$wp_toolkit_installed, time()+3600);
+			setcookie("sk_wp_toolkit_installed", (bool)$wp_toolkit_installed, time()+3600, '/');
+		} else {
+			$wp_toolkit_installed = $_COOKIE['sk_wp_toolkit_installed'];
 		}
 
 		// Onyx
