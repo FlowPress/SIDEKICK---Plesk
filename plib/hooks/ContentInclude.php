@@ -5,6 +5,12 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 
 	public function getHeadContent()
 	{
+		$licenseHelper = new Modules_Sidekick_License();
+		$activation_id = $licenseHelper->getPleskLicense();
+		if (is_null($activation_id)) {
+			return '';
+		}
+
 		$platform      = pm_ProductInfo::getPlatform();
 		$is_admin      = pm_Session::getClient()->isAdmin();
 		$is_reseller   = pm_Session::getClient()->isReseller();
@@ -12,7 +18,6 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 		$langulage     = pm_Locale::getCode();
 		$apiResponse   = pm_ApiRpc::getService()->call("<server><get><gen_info/></get></server>");
 		$mode          = $apiResponse->server->get->result->gen_info->mode;
-		$activation_id = pm_Settings::get('sidekick_activation_id');
 
 		if ('standard' == $mode) {
 			$view = 'service_provider';
@@ -31,8 +36,6 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 		}
 
 		// Onyx
-		$activation_id = '735e24da-3c31-49ea-8265-8b3fbe546d2e';
-
 		$data = array(
 			'activation_id' => $activation_id,
 			'compatibilities' => array(
