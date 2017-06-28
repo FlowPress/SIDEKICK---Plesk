@@ -36,7 +36,8 @@ class IndexController extends pm_Controller_Action
 
 	private function processActivations($form){
 
-		$license = $this->getWordPressLicense();
+		$licenseHelper = new Modules_Sidekick_License();
+		$license = $licenseHelper->getWordPressLicense();
 
 		if (is_null($license)) {
 			$this->_status->addMessage('error', 'SIDEKICK license seems to be missing. ');
@@ -140,7 +141,8 @@ class IndexController extends pm_Controller_Action
 			));
 		}
 
-		$this->view->license = $this->getWordPressLicense();
+		$licenseHelper = new Modules_Sidekick_License();
+		$this->view->license = $licenseHelper->getWordPressLicense();
 
 		$form->addControlButtons(array(
 			'cancelLink' => pm_Context::getModulesListUrl(),
@@ -150,24 +152,5 @@ class IndexController extends pm_Controller_Action
 		);
 
 		$this->view->buy_link = $this->_getBuyUrl();
-	}
-
-	private function getWordPressLicense()
-	{
-		$license = $this->getLicense();
-		if (is_null($license) || !isset($license['wordpress'])) {
-			return null;
-		}
-		return $license['wordpress'];
-	}
-
-	private function getLicense()
-	{
-		$licenses = pm_License::getAdditionalKeysList('ext-sidekick');
-		if (0 == count($licenses)) {
-			return null;
-		}
-		$license = reset($licenses);
-		return json_decode($license['key-body'], true);
 	}
 }
