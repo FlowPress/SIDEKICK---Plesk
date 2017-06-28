@@ -17,10 +17,20 @@ class IndexController extends pm_Controller_Action
 
 	public function indexAction()
 	{
-		// Default action will be formAction
-		$this->_forward('wordpress');
-	}
+		$this->view->buyUrl = $this->_getBuyUrl();
 
+		$licenseHelper = new Modules_Sidekick_License();
+		$pleskLicense = $licenseHelper->getPleskLicense();
+		$wordPressLicense = $licenseHelper->getWordPressLicense();
+
+		if (is_null($pleskLicense) && is_null($wordPressLicense)) {
+			$this->view->message = 'buy_license';
+		} elseif (is_null($wordPressLicense)) {
+			$this->view->message = 'plesk_walkthrough';
+		} else {
+			$this->_forward('wordpress');
+		}
+	}
 
 	public function wordpressAction(){
 
