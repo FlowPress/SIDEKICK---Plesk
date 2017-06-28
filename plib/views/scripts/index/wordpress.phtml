@@ -1,7 +1,7 @@
 <?php if (!$this->toolkit_not_there): ?>
 	<?php if (!$this->wp_installs): ?>
 		There is no WordPress installations to install Sidekick on.
-	<?php elseif (!$this->licenses): ?>
+	<?php elseif (is_null($this->license)): ?>
 		You need to installa a SIDEKICK license to activate WordPress installs.
 
 		<br/><br/>

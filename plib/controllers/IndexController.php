@@ -37,57 +37,49 @@ class IndexController extends pm_Controller_Action
 
 	private function processActivations($form){
 
-		$licenses = pm_License::getAdditionalKeysList('ext-sidekick');
+		$license = $this->getWordPressLicense();
 
-		if (count($licenses) == 0) {
+		if (is_null($license)) {
 			$this->_status->addMessage('error', 'SIDEKICK license seems to be missing. ');
 		} else {
-			$license = reset($licenses);
-			if (isset($license['key-body'])) {
+			$activation_id = base64_decode($license);
 
-				$activation_id = base64_decode($license['key-body']);
-
-				foreach ($_POST as $key => $value) {
-					// var_dump($key);
-					if (strpos($key, 'sidekick_activated_') !== false && $value == '1') {
-						// activate this domain
-						list($blah,$domain_id) = explode('sidekick_activated_',$key);
-						$instanceId = $domain_id;
-						$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
-						try{
-							$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "install", "sidekick","--activate","--force"]));
-						} catch (Exception $e){
-							// var_dump($e->getMessage());
-						}
-						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
-						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "update", "sk_activation_id", $activation_id]));
-						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
-					} else if (strpos($key, 'sidekick_activated_') !== false && $value == '0') {
-						list($blah,$domain_id) = explode('sidekick_activated_',$key);
-						$instanceId = $domain_id;
-						$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
-						try{
-							$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "deactivate", "sidekick","--uninstall"]));
-						} catch (Exception $e){
-							// var_dump($e->getMessage());
-						}
-						try{
-							$result = pm_ApiCli::call('extension', array_merge($args, ["option", "delete", "sk_activation_id"]));
-						} catch (Exception $e){
-							// var_dump($e->getMessage());
-						}
-
+			foreach ($_POST as $key => $value) {
+				// var_dump($key);
+				if (strpos($key, 'sidekick_activated_') !== false && $value == '1') {
+					// activate this domain
+					list($blah,$domain_id) = explode('sidekick_activated_',$key);
+					$instanceId = $domain_id;
+					$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
+					try{
+						$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "install", "sidekick","--activate","--force"]));
+					} catch (Exception $e){
+						// var_dump($e->getMessage());
 					}
-				}
+					$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
+					$result = pm_ApiCli::call('extension', array_merge($args, ["option", "update", "sk_activation_id", $activation_id]));
+					$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
+				} else if (strpos($key, 'sidekick_activated_') !== false && $value == '0') {
+					list($blah,$domain_id) = explode('sidekick_activated_',$key);
+					$instanceId = $domain_id;
+					$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
+					try{
+						$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "deactivate", "sidekick","--uninstall"]));
+					} catch (Exception $e){
+						// var_dump($e->getMessage());
+					}
+					try{
+						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "delete", "sk_activation_id"]));
+					} catch (Exception $e){
+						// var_dump($e->getMessage());
+					}
 
-			} else {
-				$this->_status->addMessage('error', 'SIDEKICK license seems to be missing. ');
-				return;
+				}
 			}
+			$this->_status->addMessage('info', 'Successfully updated!');
 
 		}
 
-		$this->_status->addMessage('info', 'Successfully updated!');
 		$this->_helper->json(['redirect' => pm_Context::getBaseUrl()]);
 
 	}
@@ -149,7 +141,7 @@ class IndexController extends pm_Controller_Action
 			));
 		}
 
-		$this->view->licenses = pm_License::getAdditionalKeysList('ext-sidekick');
+		$this->view->license = $this->getWordPressLicense();
 
 		$form->addControlButtons(array(
 			'cancelLink' => pm_Context::getModulesListUrl(),
@@ -159,5 +151,24 @@ class IndexController extends pm_Controller_Action
 		);
 
 		$this->view->buy_link = $this->_getBuyUrl();
+	}
+
+	private function getWordPressLicense()
+	{
+		$license = $this->getLicense();
+		if (is_null($license) || !isset($license['wordpress'])) {
+			return null;
+		}
+		return $license['wordpress'];
+	}
+
+	private function getLicense()
+	{
+		$licenses = pm_License::getAdditionalKeysList('ext-sidekick');
+		if (0 == count($licenses)) {
+			return null;
+		}
+		$license = reset($licenses);
+		return json_decode($license['key-body'], true);
 	}
 }
