@@ -6,6 +6,7 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 	public function getHeadContent()
 	{
 		$platform      = pm_ProductInfo::getPlatform();
+		$version       = pm_ProductInfo::getVersion();
 		$is_admin      = pm_Session::getClient()->isAdmin();
 		$is_reseller   = pm_Session::getClient()->isReseller();
 		$is_client     = pm_Session::getClient()->isClient();
@@ -39,10 +40,11 @@ class Modules_Sidekick_ContentInclude extends pm_Hook_ContentInclude
 			'activation_id' => $activation_id,
 			'compatibilities' => array(
 				'server_os'             => $platform,
+				'version'               => $version,
 				'user_type_is_admin'    => $is_admin,
 				'user_type_is_reseller' => $is_reseller,
 				'user_type_is_client'   => $is_client,
-				'wp_toolkit_installed' => $wp_toolkit_installed,
+				'wp_toolkit_installed'  => $wp_toolkit_installed,
 				'language'              => $langulage,
 				'view'                  => $view
 			)
