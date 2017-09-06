@@ -1,0 +1,17 @@
+<?php if ($this->message == 'buy_license') : ?>
+
+    <p>
+        SIDEKICK places interactive, real-time Walkthroughs right inside the Plesk Control Panel and to WordPress installations of your customers.
+        The Walkthroughs are pre-built and constantly updated to provide the best experience.
+    </p>
+    <p>
+        The extension requires license to work. You can purchase the license <a href="<?= $this->buyUrl ?>" target="_blank">here</a>.
+    </p>
+
+<?php elseif ($this->message = 'plesk_walkthrough') : ?>
+
+    <p>
+        Use the panel in left bottom corner to launch Plesk Walkthroughs.
+    </p>
+
+<?php endif; ?>

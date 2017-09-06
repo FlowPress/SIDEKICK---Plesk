@@ -1,5 +1,4 @@
 <?php
-// Copyright 1999-2015. Parallels IP Holdings GmbH.
 
 class IndexController extends pm_Controller_Action
 {
@@ -18,12 +17,29 @@ class IndexController extends pm_Controller_Action
 
 	public function indexAction()
 	{
-		// Default action will be formAction
-		$this->_forward('wordpress');
+		$this->view->buyUrl = $this->_getBuyUrl();
+
+		$licenseHelper = new Modules_Sidekick_License();
+		$pleskLicense = $licenseHelper->getPleskLicense();
+		$wordPressLicense = $licenseHelper->getWordPressLicense();
+
+		if (is_null($pleskLicense) && is_null($wordPressLicense)) {
+			$this->view->message = 'buy_license';
+		} elseif (is_null($wordPressLicense)) {
+			$this->view->message = 'plesk_walkthrough';
+		} else {
+			$this->_forward('wordpress');
+		}
 	}
 
-
-	public function wordpressAction(){
+	public function wordpressAction()
+	{
+		$licenseHelper = new Modules_Sidekick_License();
+		$license = $licenseHelper->getWordPressLicense();
+		if (is_null($license)) {
+			$this->_forward('index');
+			return;
+		}
 
 		$form = new pm_Form_Simple();
 
@@ -37,57 +53,50 @@ class IndexController extends pm_Controller_Action
 
 	private function processActivations($form){
 
-		$licenses = pm_License::getAdditionalKeysList('ext-sidekick');
+		$licenseHelper = new Modules_Sidekick_License();
+		$license = $licenseHelper->getWordPressLicense();
 
-		if (count($licenses) == 0) {
+		if (is_null($license)) {
 			$this->_status->addMessage('error', 'SIDEKICK license seems to be missing. ');
 		} else {
-			$license = reset($licenses);
-			if (isset($license['key-body'])) {
+			$activation_id = base64_decode($license);
 
-				$activation_id = base64_decode($license['key-body']);
-
-				foreach ($_POST as $key => $value) {
-					// var_dump($key);
-					if (strpos($key, 'sidekick_activated_') !== false && $value == '1') {
-						// activate this domain
-						list($blah,$domain_id) = explode('sidekick_activated_',$key);
-						$instanceId = $domain_id;
-						$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
-						try{
-							$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "install", "sidekick","--activate","--force"]));
-						} catch (Exception $e){
-							// var_dump($e->getMessage());
-						}
-						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
-						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "update", "sk_activation_id", $activation_id]));
-						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
-					} else if (strpos($key, 'sidekick_activated_') !== false && $value == '0') {
-						list($blah,$domain_id) = explode('sidekick_activated_',$key);
-						$instanceId = $domain_id;
-						$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
-						try{
-							$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "deactivate", "sidekick","--uninstall"]));
-						} catch (Exception $e){
-							// var_dump($e->getMessage());
-						}
-						try{
-							$result = pm_ApiCli::call('extension', array_merge($args, ["option", "delete", "sk_activation_id"]));
-						} catch (Exception $e){
-							// var_dump($e->getMessage());
-						}
-
+			foreach ($_POST as $key => $value) {
+				// var_dump($key);
+				if (strpos($key, 'sidekick_activated_') !== false && $value == '1') {
+					// activate this domain
+					list($blah,$domain_id) = explode('sidekick_activated_',$key);
+					$instanceId = $domain_id;
+					$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
+					try{
+						$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "install", "sidekick","--activate","--force"]));
+					} catch (Exception $e){
+						// var_dump($e->getMessage());
 					}
-				}
+					$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "siteurl"]));
+					$result = pm_ApiCli::call('extension', array_merge($args, ["option", "update", "sk_activation_id", $activation_id]));
+					$result = pm_ApiCli::call('extension', array_merge($args, ["option", "get", "sk_activation_id"]));
+				} else if (strpos($key, 'sidekick_activated_') !== false && $value == '0') {
+					list($blah,$domain_id) = explode('sidekick_activated_',$key);
+					$instanceId = $domain_id;
+					$args = ["--call", 'wp-toolkit', "--wp-cli", "-instance-id", $instanceId, "--"];
+					try{
+						$result = pm_ApiCli::call('extension', array_merge($args, ["plugin", "deactivate", "sidekick","--uninstall"]));
+					} catch (Exception $e){
+						// var_dump($e->getMessage());
+					}
+					try{
+						$result = pm_ApiCli::call('extension', array_merge($args, ["option", "delete", "sk_activation_id"]));
+					} catch (Exception $e){
+						// var_dump($e->getMessage());
+					}
 
-			} else {
-				$this->_status->addMessage('error', 'SIDEKICK license seems to be missing. ');
-				return;
+				}
 			}
+			$this->_status->addMessage('info', 'Successfully updated!');
 
 		}
 
-		$this->_status->addMessage('info', 'Successfully updated!');
 		$this->_helper->json(['redirect' => pm_Context::getBaseUrl()]);
 
 	}
@@ -149,15 +158,11 @@ class IndexController extends pm_Controller_Action
 			));
 		}
 
-		$this->view->licenses = pm_License::getAdditionalKeysList('ext-sidekick');
-
 		$form->addControlButtons(array(
 			'cancelLink' => pm_Context::getModulesListUrl(),
 			'sendTitle' => 'Update',
 			'cancelTitle' => 'Cancel'
 			)
 		);
-
-		$this->view->buy_link = $this->_getBuyUrl();
 	}
 }
