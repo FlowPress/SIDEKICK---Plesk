@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
     <module>
         <id>sidekick</id>
-        <name>SIDEKICK11</name>
-        <description>This extension adds the SIDEKICK platform and over 60 real-time, interactive tutorials, to your Plesk installation. Learn or teach your customers to use Plesk in-flow and in-context without having to read a document or watch a video. For a complete list of available tutorials and more information on SIDEKICK visit http://www.sidekick.pro/plesk-extension .</description>
+        <name>Sidekick</name>
+        <description>This extension adds the SIDEKICK platform and over 60 real-time, interactive tutorials, to your Plesk installation. Learn or teach your customers to use Plesk and WordPress in-flow and in-context without having to read a document or watch a video. For a complete list of available tutorials and more information on SIDEKICK visit http://www.sidekick.pro/plesk-extension .</description>
 		<category>help</category>
-        <version>1.03</version>
+        <version>1.1</version>
 		<buy_url>https://go.plesk.com/buy-plesk-ext/sidekick</buy_url>
         <release>1</release>
         <vendor>FlowPress</vendor>
         <url>https://www.sidekick.pro/plesk-tutorials/</url>
-        <plesk_min_version>17.0</plesk_min_version>
+        <plesk_min_version>17.5</plesk_min_version>
         <plesk_max_version>18.0</plesk_max_version>
     </module>
