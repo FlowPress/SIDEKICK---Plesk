@@ -12,5 +12,5 @@
         <vendor>FlowPress</vendor>
         <url>https://www.sidekick.pro/plesk-tutorials/</url>
         <plesk_min_version>17.0</plesk_min_version>
-        <plesk_max_version>17.5</plesk_max_version>
+        <plesk_max_version>17.5.99</plesk_max_version>
     </module>
